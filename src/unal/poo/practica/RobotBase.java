@@ -12,42 +12,43 @@ public class RobotBase
         public static City objetos;
         public static Robot estudiante;
         
-	public static void main (String[] args){
+        
+	public static void main (String[] args) throws InterruptedException{
             //Declarar la creacion de la ciudad
-            objetos = new City("Field.txt");
-	    objetos.showThingCounts(true);
+            
+            
             
             //Direction.NORTH, EAST, SOUTH, WEST
             //Definicion de la ubicacion del robot, Ciudad, posicion, Direccion, Numero things en el bolso.
-            estudiante = new Robot(objetos,0, 2, Direction.EAST,10);
             
+            
+            Cultivo cultivo = new Cultivo(5, 5);
+          
+            cultivo.sembrar(45, 78, 45,  1, 0, 0);
+            
+            Sembrador s_1= new Sembrador(cultivo, 0, 1, Direction.EAST,5,5,5);
+            Monitor m_1= new Monitor("HD", cultivo, 1, 1, Direction.EAST, 7, 5);
+            Panel p= new Panel(8, cultivo, 0, 3);
+            Planta t_1= new Planta(45, 78, 45, cultivo, 1, 0, 0);
+            Planta t_2= new Planta(45, 78, 45, cultivo, 2, 0, 1);
+            
+            
+            
+            
+           
 	    //Mover una interseccion en el sentido al cual este apuntando el objeto.
-            estudiante.move ();
+            s_1.turnLeft();
+            s_1.turnLeft();
+            s_1.move();
             
-            //Girar a la izquierda
-            estudiante.turnLeft();
-            
-            //Tomando decisiones, Si puedo tomar un Thing
-            boolean puedeTomar = estudiante.canPickThing();
-            
-            //Tomar un Thing
-            if(puedeTomar == true)
+            Thing t = estudiante.examineThings(new FlorPred()).next();
+            if(t instanceof Flor){
                estudiante.pickThing();
+            }
             
-            //Especifica el numero de Thing que tiene en robot en el bolso
-            int numeroThings = estudiante.countThingsInBackpack();
-            
-            //Poner Thing, se debe validar que tenga things en el bolso
-            estudiante.putThing();
-                       
-            //Si el frente esta libre de Wall
-            estudiante.frontIsClear();
-            
-            //Invocando una funcion
-            creacionFuncion(4);
-            
-            //Toman un Thing
-            estudiante.pickThing();
+            estudiante.move();
+           
+           
             
             
 	}
